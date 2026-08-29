@@ -16,8 +16,8 @@ class TasksController < ApplicationController
   # CREATE
   def create
     task = Task.new(
-      name: params[:name],
-      description: params[:description]
+      name: params[:name] || "Practice #{Faker::Job.key_skill}",
+      description: params[:description] || Faker::Lorem.paragraph
     )
 
     if task.save
