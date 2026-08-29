@@ -5,6 +5,8 @@ class TasksController < ApplicationController
   # Update
   # Destroy
 
+  # test
+
   # READ - ALL TASKS
   def index
     tasks = Task.all
