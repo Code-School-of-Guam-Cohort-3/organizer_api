@@ -1,5 +1,8 @@
 class Task < ApplicationRecord
   # validates :name, presence: true
+
+  # Association - Also a validation
+  belongs_to :user
 end
 
 # Method 1
