@@ -5,6 +5,8 @@ class TasksController < ApplicationController
   # Update
   # Destroy
 
+  # test
+
   # READ - ALL TASKS
   def index
     tasks = Task.all
@@ -18,7 +20,7 @@ class TasksController < ApplicationController
     task = Task.new(
       name: params[:name] || "Practice #{Faker::Job.key_skill}",
       description: params[:description] || Faker::Lorem.paragraph,
-      assigned_user_id: params[:user_id]
+      user_id: params[:user_id]
     )
 
     if task.save
@@ -53,8 +55,9 @@ class TasksController < ApplicationController
 
     if task
       if task.update(
-        name: params[:name],
-        description: params[:description]
+        name: params[:name] || task.name,
+        description: params[:description] || task.description,
+        user_id: params[:user_id] || task.user_id
       )
         # HAPPY PATH
         render json: task

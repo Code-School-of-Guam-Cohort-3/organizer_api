@@ -3,9 +3,9 @@
 end
 
 5.times do
-    Task.create(name: Faker::Book.title, description: Faker::Lorem.paragraph, assigned_user_id: 1)
+    Task.create(name: Faker::Book.title, description: Faker::Lorem.paragraph, user_id: 1)
 end
 
 5.times do
-    Task.create(name: Faker::Book.title, description: Faker::Lorem.paragraph, assigned_user_id: 2)
+    Task.create(name: Faker::Book.title, description: Faker::Lorem.paragraph, user_id: 2)
 end
