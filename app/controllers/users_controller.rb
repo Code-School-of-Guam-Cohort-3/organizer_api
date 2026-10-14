@@ -9,7 +9,10 @@ class UsersController < ApplicationController
   # CREATE
   def create
     user = User.new(
-      name: params[:name] || Faker::Name.name
+      name: params[:name] || Faker::Name.name,
+      email: params[:email] || "#{Faker::Name.name}@gmail.com",
+      password: params[:password],
+      password_confirmation: params[:password_confirmation]
     )
 
     if user.save

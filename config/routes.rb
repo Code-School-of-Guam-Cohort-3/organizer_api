@@ -11,5 +11,7 @@ Rails.application.routes.draw do
   put "/users/:id" => "users#update"
   delete "/users/:id" => "users#destroy"
 
+  post '/login', to: 'sessions#create'
+
   # restful crud routes - restful convention - REST API
 end
