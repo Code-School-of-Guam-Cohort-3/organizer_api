@@ -1,4 +1,6 @@
 class TasksController < ApplicationController
+
+  before_action :authorize_request, except: [:index, :show]
   # CRUD
   # Create
   # Read - Index and Show
@@ -10,7 +12,7 @@ class TasksController < ApplicationController
   # READ - ALL TASKS
   def index
     tasks = Task.all
-
+    
     render json: tasks
   end
 
@@ -22,7 +24,9 @@ class TasksController < ApplicationController
       description: params[:description] || Faker::Lorem.paragraph,
       user_id: params[:user_id]
     )
-
+    puts "------------------------------------------------"
+    p current_user
+    puts "------------------------------------------------"
     if task.save
       # HAPPY PATH
       render json: task, status: :created

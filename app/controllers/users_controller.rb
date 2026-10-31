@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  before_action :authorize_request, except: [:index, :show, :create]
+
   def index
     users = User.all
 
