@@ -24,9 +24,6 @@ class TasksController < ApplicationController
       description: params[:description] || Faker::Lorem.paragraph,
       user_id: params[:user_id]
     )
-    puts "------------------------------------------------"
-    p current_user
-    puts "------------------------------------------------"
     if task.save
       # HAPPY PATH
       render json: task, status: :created
