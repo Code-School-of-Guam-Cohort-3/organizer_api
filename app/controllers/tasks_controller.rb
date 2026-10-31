@@ -7,7 +7,9 @@ class TasksController < ApplicationController
   # Update
   # Destroy
 
-  # test
+  # Admins: can perform all CRUD actions
+  # Users (signed in): can Create and Read
+  # Users (not signed in): can Read only
 
   # READ - ALL TASKS
   def index
@@ -52,42 +54,50 @@ class TasksController < ApplicationController
 
   # UPDATE
   def update
-    task = Task.find_by(id: params[:id])
+    if @current_user.user_role == "admin"
+      task = Task.find_by(id: params[:id])
 
-    if task
-      if task.update(
-        name: params[:name] || task.name,
-        description: params[:description] || task.description,
-        user_id: params[:user_id] || task.user_id
-      )
-        # HAPPY PATH
-        render json: task
+      if task
+        if task.update(
+          name: params[:name] || task.name,
+          description: params[:description] || task.description,
+          user_id: params[:user_id] || task.user_id
+        )
+          # HAPPY PATH
+          render json: task
+        else
+          # SAD PATH - Task exists, but update failed
+          render json: { errors: task.errors.full_messages },
+            status: :unprocessable_entity
+        end
       else
-        # SAD PATH - Task exists, but update failed
-        render json: { errors: task.errors.full_messages },
-          status: :unprocessable_entity
+        # SAD PATH - Task doesn't exist
+        render json: { message: "Task doesn't exist." },
+          status: :not_found
       end
     else
-      # SAD PATH - Task doesn't exist
-      render json: { message: "Task doesn't exist." },
-        status: :not_found
+      render json: { message: "Not an Admin." }, status: :unauthorized
     end
   end
 
 
   # DESTROY
   def destroy
-    task = Task.find_by(id: params[:id])
+    if @current_user.user_role == "admin"
+      task = Task.find_by(id: params[:id])
 
-    if task
-      # HAPPY PATH
-      task.destroy
+      if task
+        # HAPPY PATH
+        task.destroy
 
-      render json: { message: "Task deleted." }
+        render json: { message: "Task deleted." }
+      else
+        # SAD PATH
+        render json: { message: "Task doesn't exist." },
+          status: :not_found
+      end
     else
-      # SAD PATH
-      render json: { message: "Task doesn't exist." },
-        status: :not_found
+      render json: { message: "Not an Admin." }, status: :unauthorized 
     end
   end
 end

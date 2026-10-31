@@ -8,14 +8,15 @@ class UsersController < ApplicationController
     render json: users
   end
 
-
+  # roles = ["admin", "user"]
   # CREATE
   def create
     user = User.new(
       name: params[:name] || Faker::Name.name,
       email: params[:email] || "#{Faker::Name.name}@gmail.com",
       password: params[:password],
-      password_confirmation: params[:password_confirmation]
+      password_confirmation: params[:password_confirmation],
+      user_role: params[:user_role] || "user"
     )
 
     if user.save
@@ -31,8 +32,10 @@ class UsersController < ApplicationController
 
   # READ - ONE TASK
   def show
-    user = user.find_by(id: params[:id])
-
+    user = User.find_by(id: params[:id])
+    p "--------------------------------------"
+    puts params
+    p "--------------------------------------"
     if user
       # HAPPY PATH
       render json: user
@@ -51,7 +54,10 @@ class UsersController < ApplicationController
     if user
       if user.update(
         name: params[:name],
-        description: params[:description]
+        description: params[:description],
+        password: params[:password],
+        password_confirmation: params[:password_confirmation],
+        user_role: params[:user_role] || "user"
       )
         # HAPPY PATH
         render json: user
